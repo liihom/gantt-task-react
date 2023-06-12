@@ -55,6 +55,12 @@ export interface Task {
   bizStatusName?: string;
   /** 工时状态：1预估工时、2实际工时、3混合工时 */
   showType?: number;
+  /**  任务 - 预估工时 */
+  estimatedTime?: number;
+  /** 任务 - 实际工时 */
+  realTime?: number;
+  /** 需求所属需求 */
+  needBelongs?: number;
 }
 
 export interface EventOption {
@@ -96,6 +102,8 @@ export interface EventOption {
    * Invokes on expander on task list
    */
   onExpanderClick?: (task: ItemProps) => void;
+  onReachedLeft?: () => void;
+  onReachedRight?: () => void;
 }
 
 export interface DisplayOption {

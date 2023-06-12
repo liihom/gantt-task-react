@@ -41,10 +41,10 @@ export const TaskListTableDefault: React.FC<{
   tasks,
   fontFamily,
   fontSize,
-  locale,
+  // locale,
   onExpanderClick,
 }) => {
-  console.log(locale);
+  // console.log(locale);
   // const toLocaleDateString = useMemo(
   //   () => toLocaleDateStringFactory(locale),
   //   [locale]

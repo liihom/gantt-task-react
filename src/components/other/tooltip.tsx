@@ -241,14 +241,24 @@ export const StandardTooltipContent: React.FC<{
           task.end.getMonth() + 1
         }.${task.end.getDate()}`}</span>
       </div> */}
-      {/* <div className={styles.tooltipContentItems}>
-        <span>预估工时</span>
-        <span>8h</span>
-      </div>
-      <div className={styles.tooltipContentItems}>
-        <span>实际工时</span>
-        <span>8h</span>
-      </div> */}
+      {task.bizType === 1 && task.needBelongs && (
+        <div className={styles.tooltipContentItems}>
+          <span>所属需求</span>
+          <span>{task.needBelongs}</span>
+        </div>
+      )}
+      {task.bizType === 2 && (
+        <div>
+          <div className={styles.tooltipContentItems}>
+            <span>预估工时</span>
+            <span>{task.estimatedTime}h</span>
+          </div>
+          <div className={styles.tooltipContentItems}>
+            <span>实际工时</span>
+            <span>{task.realTime}h</span>
+          </div>
+        </div>
+      )}
       {/* <b style={{ fontSize: fontSize + 6 }}>{`${
         task.name
       }: ${task.start.getDate()}-${

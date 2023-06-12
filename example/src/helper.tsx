@@ -109,8 +109,8 @@ export function initTasks(idx: number) {
       bizState: 4,
     },
     {
-      start: "2023-05-01",
-      end: "2023-05-03",
+      start: "2023-6-11",
+      end: "2023-06-12",
       name: idx + "任务8",
       id: "Task 11",
       progress: 100,
@@ -118,12 +118,14 @@ export function initTasks(idx: number) {
       type: "task",
       project: "ProjectSample",
       displayOrder: 8,
+      bizType: 1,
       bizState: 4,
+      needBelongs: "所属需求名字",
     },
     {
-      start: "2023-05-31",
-      end: "2023-05-03",
-      name: idx + "任务9",
+      start: "2023-6-11",
+      end: "2023-06-12",
+      name: idx + "任务12345",
       id: "Task 10",
       progress: 100,
       isDisabled: true,
@@ -131,6 +133,9 @@ export function initTasks(idx: number) {
       project: "ProjectSample",
       displayOrder: 8,
       bizState: 4,
+      bizType: 2,
+      realTime: 8,
+      estimatedTime: 4,
     },
   ];
   return tasks;

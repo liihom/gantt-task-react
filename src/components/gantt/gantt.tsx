@@ -71,6 +71,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   onDelete,
   // onSelect,
   onExpanderClick,
+  onReachedLeft,
+  onReachedRight,
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const taskListRef = useRef<HTMLDivElement>(null);
@@ -165,7 +167,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
       return newItem;
     });
     setBarTasks(tempBarTasks);
-    console.log("tempBarTasks = ", tempBarTasks);
   }, [
     tasks,
     dateSetup, // ?
@@ -347,6 +348,16 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 
   const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
     if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
+      const scrollLeft = event.currentTarget.scrollLeft;
+      const offsetWidth = event.currentTarget.offsetWidth;
+      const diff = svgWidth - offsetWidth - scrollLeft;
+      if (scrollLeft <= 0) {
+        console.log("触左边缘了。。。");
+        onReachedLeft?.();
+      } else if (diff <= 0) {
+        console.log("触右边缘了。。。");
+        onReachedRight?.();
+      }
       setScrollX(event.currentTarget.scrollLeft);
       setIgnoreScrollEvent(true);
     } else {

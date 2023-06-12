@@ -20,6 +20,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  border-bottom: 1px solid #7e868e1a;
 }
 .taskListNameWrapper {
   display: flex;
