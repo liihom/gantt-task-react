@@ -13,3 +13,8 @@
 .gridTick {
   stroke: #e6e4e4;
 }
+
+.work_hour_border {
+  stroke: #fff;
+  stroke-width: 2;
+}

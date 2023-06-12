@@ -1,6 +1,7 @@
 .barLabel {
-  fill: #fff;
+  /* fill: #fff; */
   text-anchor: middle;
+  font-size: 10px;
   font-weight: lighter;
   dominant-baseline: central;
   -webkit-touch-callout: none;
@@ -20,4 +21,13 @@
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.bar_top_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: #6F778F;
+  padding: 0 2px;
 }

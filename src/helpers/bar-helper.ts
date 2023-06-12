@@ -1,10 +1,11 @@
-import { Task } from "../types/public-types";
+import { Task, DatesProps } from "../types/public-types";
 import { BarTask, TaskTypeInternal } from "../types/bar-task";
 import { BarMoveAction } from "../types/gantt-task-actions";
 
 export const convertToBarTasks = (
+  baseIdx: number,
   tasks: Task[],
-  dates: Date[],
+  dates: DatesProps[],
   columnWidth: number,
   rowHeight: number,
   taskHeight: number,
@@ -22,10 +23,10 @@ export const convertToBarTasks = (
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
 ) => {
-  let barTasks = tasks.map((t, i) => {
+  let barTasks = tasks.map(t => {
     return convertToBarTask(
       t,
-      i,
+      baseIdx,
       dates,
       columnWidth,
       rowHeight,
@@ -64,7 +65,7 @@ export const convertToBarTasks = (
 const convertToBarTask = (
   task: Task,
   index: number,
-  dates: Date[],
+  dates: DatesProps[],
   columnWidth: number,
   rowHeight: number,
   taskHeight: number,
@@ -123,7 +124,7 @@ const convertToBarTask = (
         columnWidth,
         rowHeight,
         taskHeight,
-        barCornerRadius,
+        task.bizType === 1 ? barCornerRadius : 10,
         handleWidth,
         rtl,
         barProgressColor,
@@ -139,7 +140,7 @@ const convertToBarTask = (
 const convertToBar = (
   task: Task,
   index: number,
-  dates: Date[],
+  dates: DatesProps[],
   columnWidth: number,
   rowHeight: number,
   taskHeight: number,
@@ -158,13 +159,9 @@ const convertToBar = (
     x1 = taskXCoordinateRTL(task.end, dates, columnWidth);
   } else {
     x1 = taskXCoordinate(task.start, dates, columnWidth);
-    x2 = taskXCoordinate(task.end, dates, columnWidth);
+    x2 = taskXCoordinate(task.end, dates, columnWidth) + columnWidth; // 结束时间坐标多加一列宽度以便到日期结尾
   }
   let typeInternal: TaskTypeInternal = task.type;
-  if (typeInternal === "task" && x2 - x1 < handleWidth * 2) {
-    typeInternal = "smalltask";
-    x2 = x1 + handleWidth * 2;
-  }
 
   const [progressWidth, progressX] = progressWithByParams(
     x1,
@@ -203,7 +200,7 @@ const convertToBar = (
 const convertToMilestone = (
   task: Task,
   index: number,
-  dates: Date[],
+  dates: DatesProps[],
   columnWidth: number,
   rowHeight: number,
   taskHeight: number,
@@ -246,24 +243,56 @@ const convertToMilestone = (
   };
 };
 
-const taskXCoordinate = (xDate: Date, dates: Date[], columnWidth: number) => {
-  const index = dates.findIndex(d => d.getTime() >= xDate.getTime()) - 1;
-
-  const remainderMillis = xDate.getTime() - dates[index].getTime();
-  const percentOfInterval =
-    remainderMillis / (dates[index + 1].getTime() - dates[index].getTime());
-  const x = index * columnWidth + percentOfInterval * columnWidth;
+/**
+ * 获取 Task x坐标
+ * @param xDate - 开始时间
+ * @param dates - 时间范围内所有时间值
+ * @param columnWidth - 列宽
+ */
+const taskXCoordinate = (
+  xDate: Date,
+  dates: DatesProps[],
+  columnWidth: number
+) => {
+  const index =
+    // dates.findIndex(d => new Date(d.date).getTime() >= xDate.getTime()) - 1;
+    dates.findIndex(d => new Date(d.date).getTime() >= xDate.getTime());
+  // [00, 01, 02]
+  // ==
+  // 01 -> index = 1-1=0
+  // const remainderMillis = xDate.getTime() - (dates[index]?.getTime() || 0);
+  // 段 - 差值
+  // const percentOfInterval =
+  //   remainderMillis /
+  //   ((dates[index + 1]?.getTime() || 0) - (dates[index]?.getTime() || 0));
+  // 差值 /
+  // const x = index * columnWidth + percentOfInterval * columnWidth;
+  const x = index * columnWidth;
+  // console.log(
+  //   "获取 Task x坐标 = ",
+  //   xDate,
+  //   index,
+  //   remainderMillis,
+  //   percentOfInterval,
+  //   x
+  // );
   return x;
 };
 const taskXCoordinateRTL = (
   xDate: Date,
-  dates: Date[],
+  dates: DatesProps[],
   columnWidth: number
 ) => {
   let x = taskXCoordinate(xDate, dates, columnWidth);
   x += columnWidth;
   return x;
 };
+/**
+ * 获取 Task y坐标
+ * @param index - Task 索引
+ * @param rowHeight - 行高
+ * @param taskHeight - Task 高度
+ */
 const taskYCoordinate = (
   index: number,
   rowHeight: number,

@@ -37,6 +37,11 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
     }
   }, [scrollX]);
 
+  const lines = barProps.tasks
+    .map(item => item.tasks.length)
+    .reduce((a, b) => a + b, barProps.tasks.length);
+  const svgHeight = barProps.rowHeight * lines;
+
   return (
     <div
       className={styles.ganttVerticalContainer}
@@ -63,12 +68,19 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={gridProps.svgWidth}
-          height={barProps.rowHeight * barProps.tasks.length}
+          height={svgHeight}
           fontFamily={barProps.fontFamily}
           ref={ganttSVGRef}
         >
           <Grid {...gridProps} />
-          <TaskGanttContent {...newBarProps} />
+          {/* 每组 */}
+          {barProps.tasks.map(item => (
+            <TaskGanttContent
+              {...newBarProps}
+              items={item.tasks}
+              key={item.id}
+            />
+          ))}
         </svg>
       </div>
     </div>

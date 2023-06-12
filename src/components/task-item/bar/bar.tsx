@@ -12,7 +12,7 @@ export const Bar: React.FC<TaskItemProps> = ({
   isDateChangeable,
   rtl,
   onEventStart,
-  isSelected,
+  // isSelected,
 }) => {
   const progressPoint = getProgressPoint(
     +!rtl * task.progressWidth + task.progressX,
@@ -31,12 +31,14 @@ export const Bar: React.FC<TaskItemProps> = ({
         progressWidth={task.progressWidth}
         barCornerRadius={task.barCornerRadius}
         styles={task.styles}
-        isSelected={isSelected}
+        // isSelected={isSelected}
         onMouseDown={e => {
           isDateChangeable && onEventStart("move", task, e);
         }}
+        bizState={task.bizState}
+        bizType={task.bizType}
       />
-      <g className="handleGroup">
+      <g className="handleGroup" style={{ display: "none" }}>
         {isDateChangeable && (
           <g>
             {/* left */}

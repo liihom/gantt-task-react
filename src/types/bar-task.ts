@@ -20,4 +20,15 @@ export interface BarTask extends Task {
   };
 }
 
+export interface GroupProps {
+  tasks: BarTask[][];
+  id: string;
+  name: string;
+  hours: {
+    date: string;
+    time: string[];
+  }[];
+  hideChildren: boolean;
+}
+
 export type TaskTypeInternal = TaskType | "smalltask";

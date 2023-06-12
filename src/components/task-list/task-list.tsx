@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { BarTask } from "../../types/bar-task";
-import { Task } from "../../types/public-types";
+// import { BarTask, RowProps } from "../../types/bar-task";
+import { GroupProps } from "../../types/bar-task";
+import { ItemProps } from "../../types/public-types";
 
 export type TaskListProps = {
   headerHeight: number;
@@ -11,12 +12,12 @@ export type TaskListProps = {
   ganttHeight: number;
   scrollY: number;
   locale: string;
-  tasks: Task[];
+  tasks: GroupProps[];
   taskListRef: React.RefObject<HTMLDivElement>;
   horizontalContainerClass?: string;
-  selectedTask: BarTask | undefined;
-  setSelectedTask: (task: string) => void;
-  onExpanderClick: (task: Task) => void;
+  // selectedTask: BarTask | undefined;
+  // setSelectedTask: (task: string) => void;
+  onExpanderClick: (task: ItemProps) => void;
   TaskListHeader: React.FC<{
     headerHeight: number;
     rowWidth: string;
@@ -29,10 +30,10 @@ export type TaskListProps = {
     fontFamily: string;
     fontSize: string;
     locale: string;
-    tasks: Task[];
-    selectedTaskId: string;
-    setSelectedTask: (taskId: string) => void;
-    onExpanderClick: (task: Task) => void;
+    tasks: GroupProps[];
+    // selectedTaskId: string;
+    // setSelectedTask: (taskId: string) => void;
+    onExpanderClick: (task: ItemProps) => void;
   }>;
 };
 
@@ -44,8 +45,8 @@ export const TaskList: React.FC<TaskListProps> = ({
   rowHeight,
   scrollY,
   tasks,
-  selectedTask,
-  setSelectedTask,
+  // selectedTask,
+  // setSelectedTask,
   onExpanderClick,
   locale,
   ganttHeight,
@@ -67,7 +68,7 @@ export const TaskList: React.FC<TaskListProps> = ({
     fontSize,
     rowWidth,
   };
-  const selectedTaskId = selectedTask ? selectedTask.id : "";
+  // const selectedTaskId = selectedTask ? selectedTask.id : "";
   const tableProps = {
     rowHeight,
     rowWidth,
@@ -75,8 +76,8 @@ export const TaskList: React.FC<TaskListProps> = ({
     fontSize,
     tasks,
     locale,
-    selectedTaskId: selectedTaskId,
-    setSelectedTask,
+    // selectedTaskId: selectedTaskId,
+    // setSelectedTask,
     onExpanderClick,
   };
 

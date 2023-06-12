@@ -10,18 +10,22 @@
 }
 
 .taskListTableRow:nth-of-type(even) {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
 }
 
 .taskListCell {
   display: table-cell;
-  vertical-align: middle;
+  /* vertical-align: middle; */
+  vertical-align: top;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .taskListNameWrapper {
   display: flex;
+  cursor: pointer;
+  user-select: none;
+  padding: 11px 6px;
 }
 
 .taskListExpander {

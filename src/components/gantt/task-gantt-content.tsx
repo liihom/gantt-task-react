@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { EventOption } from "../../types/public-types";
-import { BarTask } from "../../types/bar-task";
-import { Arrow } from "../other/arrow";
+import { DatesProps, EventOption } from "../../types/public-types";
+import { BarTask, GroupProps } from "../../types/bar-task";
+// import { Arrow } from "../other/arrow";
 import { handleTaskBySVGMouseEvent } from "../../helpers/bar-helper";
 import { isKeyboardEvent } from "../../helpers/other-helper";
 import { TaskItem } from "../task-item/task-item";
@@ -12,10 +12,10 @@ import {
 } from "../../types/gantt-task-actions";
 
 export type TaskGanttContentProps = {
-  tasks: BarTask[];
-  dates: Date[];
+  tasks: GroupProps[];
+  dates: DatesProps[];
   ganttEvent: GanttEvent;
-  selectedTask: BarTask | undefined;
+  // selectedTask: BarTask | undefined;
   rowHeight: number;
   columnWidth: number;
   timeStep: number;
@@ -29,15 +29,18 @@ export type TaskGanttContentProps = {
   rtl: boolean;
   setGanttEvent: (value: GanttEvent) => void;
   setFailedTask: (value: BarTask | null) => void;
-  setSelectedTask: (taskId: string) => void;
+  // setSelectedTask: (taskId: string) => void;
 } & EventOption;
 
-export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
-  tasks,
+export const TaskGanttContent: React.FC<
+  TaskGanttContentProps & { items: GroupProps["tasks"] }
+> = ({
+  items,
+  // tasks,
   dates,
   ganttEvent,
-  selectedTask,
-  rowHeight,
+  // selectedTask,
+  // rowHeight,
   columnWidth,
   timeStep,
   svg,
@@ -49,7 +52,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   rtl,
   setGanttEvent,
   setFailedTask,
-  setSelectedTask,
+  // setSelectedTask,
   onDateChange,
   onProgressChange,
   onDoubleClick,
@@ -64,10 +67,10 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   // create xStep
   useEffect(() => {
     const dateDelta =
-      dates[1].getTime() -
-      dates[0].getTime() -
-      dates[1].getTimezoneOffset() * 60 * 1000 +
-      dates[0].getTimezoneOffset() * 60 * 1000;
+      new Date(dates[1].date).getTime() -
+      new Date(dates[0].date).getTime() -
+      new Date(dates[1].date).getTimezoneOffset() * 60 * 1000 +
+      new Date(dates[0].date).getTimezoneOffset() * 60 * 1000;
     const newXStep = (timeStep * columnWidth) / dateDelta;
     setXStep(newXStep);
   }, [columnWidth, dates, timeStep]);
@@ -202,7 +205,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   ) => {
     if (!event) {
       if (action === "select") {
-        setSelectedTask(task.id);
+        // setSelectedTask(task.id);
       }
     }
     // Keyboard events
@@ -263,7 +266,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   return (
     <g className="content">
       <g className="arrows" fill={arrowColor} stroke={arrowColor}>
-        {tasks.map(task => {
+        {/* {tasks.map(task => {
           return task.barChildren.map(child => {
             return (
               <Arrow
@@ -277,24 +280,25 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
               />
             );
           });
-        })}
+        })} */}
       </g>
       <g className="bar" fontFamily={fontFamily} fontSize={fontSize}>
-        {tasks.map(task => {
-          return (
+        {/* 每行 */}
+        {items.map(group => {
+          return group.map(item => (
             <TaskItem
-              task={task}
+              task={item}
               arrowIndent={arrowIndent}
               taskHeight={taskHeight}
-              isProgressChangeable={!!onProgressChange && !task.isDisabled}
-              isDateChangeable={!!onDateChange && !task.isDisabled}
-              isDelete={!task.isDisabled}
+              isProgressChangeable={!!onProgressChange && !item.isDisabled}
+              isDateChangeable={!!onDateChange && !item.isDisabled}
+              isDelete={!item.isDisabled}
               onEventStart={handleBarEventStart}
-              key={task.id}
-              isSelected={!!selectedTask && task.id === selectedTask.id}
+              key={item.id}
+              // isSelected={!!selectedTask && task.id === selectedTask.id}
               rtl={rtl}
             />
-          );
+          ));
         })}
       </g>
     </g>

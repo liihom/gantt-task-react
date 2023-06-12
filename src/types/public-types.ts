@@ -1,3 +1,5 @@
+import { GroupProps } from "./bar-task";
+
 export enum ViewMode {
   Hour = "Hour",
   QuarterDay = "Quarter Day",
@@ -10,6 +12,20 @@ export enum ViewMode {
   Year = "Year",
 }
 export type TaskType = "task" | "milestone" | "project";
+
+export interface ItemProps {
+  id: string;
+  name: string;
+  hours: {
+    time: string[]; // [实际工时，预估工时]
+    date: string;
+  }[];
+  tasks: Task[][];
+  hideChildren: boolean;
+  /** 任务列表数据类型：1预估时间、2实际执行时间 */
+  showType?: number;
+}
+
 export interface Task {
   id: string;
   type: TaskType;
@@ -31,6 +47,14 @@ export interface Task {
   dependencies?: string[];
   hideChildren?: boolean;
   displayOrder?: number;
+  /** 业务类型：1需求、2任务 */
+  bizType?: number;
+  /** 业务状态：1未开始、2进行中、3已完成、4时间结束未完成 */
+  bizState?: number;
+  /** 任务或需求状态对应中文描述 */
+  bizStatusName?: string;
+  /** 工时状态：1预估工时、2实际工时、3混合工时 */
+  showType?: number;
 }
 
 export interface EventOption {
@@ -71,7 +95,7 @@ export interface EventOption {
   /**
    * Invokes on expander on task list
    */
-  onExpanderClick?: (task: Task) => void;
+  onExpanderClick?: (task: ItemProps) => void;
 }
 
 export interface DisplayOption {
@@ -130,16 +154,32 @@ export interface StylingOption {
     fontFamily: string;
     fontSize: string;
     locale: string;
-    tasks: Task[];
-    selectedTaskId: string;
+    tasks: GroupProps[];
+    // selectedTaskId: string;
     /**
      * Sets selected task by id
      */
-    setSelectedTask: (taskId: string) => void;
-    onExpanderClick: (task: Task) => void;
+    // setSelectedTask: (taskId: string) => void;
+    onExpanderClick: (task: ItemProps) => void;
   }>;
 }
 
 export interface GanttProps extends EventOption, DisplayOption, StylingOption {
-  tasks: Task[];
+  // data: ItemProps[];
+  dates: {
+    /** 日期年月日字符串 */
+    date: string;
+    /** 是否是节假日 */
+    flag: boolean;
+  }[];
+  tasks: ItemProps[];
+  // dateRangeStart: Date;
+  // dateRangeEnd: Date;
+}
+
+export interface DatesProps {
+  /** 日期年月日字符串 */
+  date: string;
+  /** 是否是节假日 */
+  flag: boolean;
 }
