@@ -31,7 +31,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   // dateRangeStart = new Date(),
   // dateRangeEnd = new Date(new Date().setMonth(new Date().getMonth() + 1)),
   headerHeight = 50,
-  columnWidth = 30,
+  columnWidth = 40,
   listCellWidth = "155px",
   // rowHeight = 36,
   rowHeight = 46,
@@ -76,10 +76,10 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const taskListRef = useRef<HTMLDivElement>(null);
-  const [dateSetup, setDateSetup] = useState<DateSetup>(() => ({
+  const [dateSetup, setDateSetup] = useState<DateSetup>({
     viewMode,
     dates,
-  }));
+  });
   const [currentViewDate, setCurrentViewDate] = useState<Date | undefined>(
     undefined
   );
@@ -192,16 +192,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     onExpanderClick,
   ]);
 
-  // useEffect(() => {
-  //   const [startDate, endDate] = ganttDateRange(
-  //     dateRangeStart,
-  //     dateRangeEnd,
-  //     viewMode,
-  //     preStepsCount
-  //   );
-  //   let newDates = seedDates(startDate, endDate, viewMode);
-  //   setDateSetup({ dates: newDates, viewMode });
-  // }, [dateRangeStart, dateRangeEnd, viewMode, preStepsCount]);
+  useEffect(() => {
+    setDateSetup({ dates, viewMode });
+  }, [dates, viewMode]);
 
   useEffect(() => {
     if (
@@ -347,22 +340,28 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   };
 
   const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
-    if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
-      const scrollLeft = event.currentTarget.scrollLeft;
-      const offsetWidth = event.currentTarget.offsetWidth;
-      const diff = svgWidth - offsetWidth - scrollLeft;
-      if (scrollLeft <= 0) {
-        console.log("触左边缘了。。。");
-        onReachedLeft?.();
-      } else if (diff <= 0) {
-        console.log("触右边缘了。。。");
-        onReachedRight?.();
-      }
-      setScrollX(event.currentTarget.scrollLeft);
-      setIgnoreScrollEvent(true);
-    } else {
-      setIgnoreScrollEvent(false);
+    // if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
+    // if (!ignoreScrollEvent) {
+    const scrollLeft = event.currentTarget.scrollLeft;
+    const offsetWidth = event.currentTarget.offsetWidth;
+    const threshold = svgWidth - offsetWidth - scrollLeft;
+    const diff = scrollLeft - scrollX;
+    let direct = "right";
+    if (diff < 0) {
+      direct = "left";
     }
+    if (direct === "left" && scrollLeft <= 10) {
+      // console.log("触左边缘了。。。");
+      onReachedLeft?.();
+    } else if (direct === "right" && threshold <= 10) {
+      // console.log("触右边缘了。。。");
+      onReachedRight?.();
+    }
+    setScrollX(scrollLeft);
+    //   setIgnoreScrollEvent(true);
+    // } else {
+    //   setIgnoreScrollEvent(false);
+    // }
   };
 
   /**
@@ -454,6 +453,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     fontFamily,
     fontSize,
     rtl,
+    onCalendarBackward: onReachedLeft,
+    onCalendarForward: onReachedRight,
   };
   const barProps: TaskGanttContentProps = {
     tasks: barTasks,
@@ -515,6 +516,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
           ganttHeight={ganttHeight}
           scrollY={scrollY}
           scrollX={scrollX}
+          onCalendarBackward={onReachedLeft}
+          onCalendarForward={onReachedRight}
         />
         {ganttEvent.changedTask && (
           <Tooltip

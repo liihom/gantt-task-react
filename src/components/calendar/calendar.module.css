@@ -36,3 +36,10 @@
   stroke: #e0e0e0;
   stroke-width: 1.4;
 }
+
+.calendar_backward,
+.calendar_forward {
+  font-size: 12px;
+  fill: #3A5FFF;
+  cursor: pointer;
+}

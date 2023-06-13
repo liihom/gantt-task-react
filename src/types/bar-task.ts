@@ -29,6 +29,7 @@ export interface GroupProps {
     time: string[];
   }[];
   hideChildren: boolean;
+  showType?: number;
 }
 
 export type TaskTypeInternal = TaskType | "smalltask";

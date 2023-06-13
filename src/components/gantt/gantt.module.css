@@ -20,3 +20,26 @@
   position: relative;
   color: #20253F;
 }
+
+/* .calendar_backward,
+.calendar_forward {
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 50px;
+  background-color: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.calendar_backward {
+  left: 0;
+}
+.calendar_forward {
+  right: 0;
+}
+.calendar_backward svg,.calendar_forward svg {
+  width: 16px;
+  height: 16px;
+} */

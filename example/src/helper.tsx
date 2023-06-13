@@ -120,7 +120,7 @@ export function initTasks(idx: number) {
       displayOrder: 8,
       bizType: 1,
       bizState: 4,
-      needBelongs: "所属需求名字",
+      parentNeedName: "所属需求名字",
     },
     {
       start: "2023-6-11",
@@ -136,6 +136,7 @@ export function initTasks(idx: number) {
       bizType: 2,
       realTime: 8,
       estimatedTime: 4,
+      needName: "所属需求名字",
     },
   ];
   return tasks;

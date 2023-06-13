@@ -221,6 +221,12 @@ export const StandardTooltipContent: React.FC<{
       <div className={styles.tooltip_title}>
         {task.bizType === 1 ? "需求" : "任务"}标题：{task.name}
       </div>
+      {task.bizType === 2 && task.needName && (
+        <div className={styles.tooltipContentItems}>
+          <span>关联需求</span>
+          <span>{task.needName}</span>
+        </div>
+      )}
       <div className={styles.tooltipContentItems}>
         <span>状态</span>
         <span>{task.bizStatusName}</span>
@@ -241,10 +247,10 @@ export const StandardTooltipContent: React.FC<{
           task.end.getMonth() + 1
         }.${task.end.getDate()}`}</span>
       </div> */}
-      {task.bizType === 1 && task.needBelongs && (
+      {task.bizType === 1 && task.parentNeedName && (
         <div className={styles.tooltipContentItems}>
           <span>所属需求</span>
-          <span>{task.needBelongs}</span>
+          <span>{task.parentNeedName}</span>
         </div>
       )}
       {task.bizType === 2 && (

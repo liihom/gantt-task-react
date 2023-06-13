@@ -144,31 +144,8 @@ export const GridBody: React.FC<GridBodyProps> = ({
     );
     // 渲染工时格子
     gridHours.push(
-      <g>
-        <g key={"rowhours" + task.id}>
-          {renderHours(task, dates, columnWidth, rowHeight, y)}
-        </g>
-        {/* <g key={"Row" + idx}>
-          <rect
-            x={x}
-            y={y}
-            width={w}
-            height={h}
-            className={styles.gridRow}
-            style={{
-              fill: bgFill,
-              borderBottom: "1px solid #fff",
-            }}
-          />
-          <line
-            key="RowLineFirst"
-            x={x}
-            y1={y + h}
-            x2={x + w}
-            y2={y + h}
-            className={styles.work_hour_border}
-          />
-        </g> */}
+      <g key={"rowhours" + task.id}>
+        {renderHours(task, dates, columnWidth, rowHeight, y)}
       </g>
     );
     for (let idx = 0; idx < task.tasks.length; idx++) {

@@ -59,8 +59,10 @@ export interface Task {
   estimatedTime?: number;
   /** 任务 - 实际工时 */
   realTime?: number;
+  /** 任务 - 关联需求 */
+  needName?: number;
   /** 需求所属需求 */
-  needBelongs?: number;
+  parentNeedName?: number;
 }
 
 export interface EventOption {

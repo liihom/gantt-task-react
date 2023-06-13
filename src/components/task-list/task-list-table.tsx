@@ -60,10 +60,12 @@ export const TaskListTableDefault: React.FC<{
     >
       {tasks.map(t => {
         let expanderSymbol = "";
-        if (t.hideChildren === false) {
-          expanderSymbol = "▼";
-        } else if (t.hideChildren === true) {
-          expanderSymbol = "▶";
+        if (t.showType !== 3) {
+          if (t.hideChildren === false) {
+            expanderSymbol = "▼";
+          } else if (t.hideChildren === true) {
+            expanderSymbol = "▶";
+          }
         }
 
         const itemHeight = rowHeight * (t.tasks.length + 1);
