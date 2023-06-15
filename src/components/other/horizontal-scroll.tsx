@@ -18,6 +18,7 @@ export const HorizontalScroll: React.FC<{
 
   return (
     <div
+      id="ganttHorizontalScroll"
       dir="ltr"
       style={{
         margin: rtl

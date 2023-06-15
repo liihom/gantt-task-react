@@ -45,7 +45,7 @@ const renderHours = (
         />
         <line
           key="RowLineFirst"
-          x={x}
+          x1={x}
           y1={y + h}
           x2={x + w}
           y2={y + h}
@@ -110,7 +110,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
   const rowLines: ReactChild[] = [
     <line
       key="RowLineFirst"
-      x="0"
+      x1="0"
       y1={0}
       x2={svgWidth}
       y2={0}
@@ -129,12 +129,12 @@ export const GridBody: React.FC<GridBodyProps> = ({
           height={rowHeight}
           className={styles.gridRow}
           style={{
-            fill: "#F9FBFC",
+            fill: "#EFF1FB",
           }}
         />
         <line
           key="RowLineFirst"
-          x={0}
+          x1="0"
           y1={y + rowHeight}
           x2={hoursRowWidth}
           y2={y + rowHeight}
@@ -162,7 +162,7 @@ export const GridBody: React.FC<GridBodyProps> = ({
       rowLines.push(
         <line
           key={"rowline" + idx + task.id}
-          x="0"
+          x1="0"
           y1={y + rowHeight}
           x2={svgWidth}
           y2={y + rowHeight}

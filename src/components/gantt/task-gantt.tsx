@@ -11,8 +11,6 @@ export type TaskGanttProps = {
   ganttHeight: number;
   scrollY: number;
   scrollX: number;
-  onCalendarBackward?: () => void;
-  onCalendarForward?: () => void;
 };
 export const TaskGantt: React.FC<TaskGanttProps> = ({
   gridProps,
@@ -21,8 +19,6 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   ganttHeight,
   scrollY,
   scrollX,
-  onCalendarBackward = () => {},
-  onCalendarForward = () => {},
 }) => {
   const ganttSVGRef = useRef<SVGSVGElement>(null);
   const horizontalContainerRef = useRef<HTMLDivElement>(null);
@@ -52,17 +48,9 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       ref={verticalGanttContainerRef}
       dir="ltr"
     >
-      <span
-        className={styles.calendar_backward}
-        onClick={onCalendarBackward}
-      ></span>
-      <span
-        className={styles.calendar_forward}
-        onClick={onCalendarForward}
-      ></span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={gridProps.svgWidth + 16}
+        width={gridProps.svgWidth}
         height={calendarProps.headerHeight}
         fontFamily={barProps.fontFamily}
       >

@@ -101,7 +101,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   const [failedTask, setFailedTask] = useState<BarTask | null>(null);
 
   const svgWidth = useMemo(
-    () => dateSetup.dates.length * columnWidth,
+    () => dateSetup.dates.length * columnWidth + 10, // 10 为最右边日历前进箭头预留空间
     [dateSetup.dates, columnWidth]
   );
   // const ganttFullHeight = barTasks.length * rowHeight;
@@ -516,8 +516,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
           ganttHeight={ganttHeight}
           scrollY={scrollY}
           scrollX={scrollX}
-          onCalendarBackward={onReachedLeft}
-          onCalendarForward={onReachedRight}
         />
         {ganttEvent.changedTask && (
           <Tooltip
