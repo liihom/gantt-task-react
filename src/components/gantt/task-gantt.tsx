@@ -9,6 +9,7 @@ export type TaskGanttProps = {
   calendarProps: CalendarProps;
   barProps: TaskGanttContentProps;
   ganttHeight: number;
+  headerHeight: number;
   scrollY: number;
   scrollX: number;
 };
@@ -17,6 +18,7 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
   calendarProps,
   barProps,
   ganttHeight,
+  headerHeight,
   scrollY,
   scrollX,
 }) => {
@@ -47,12 +49,15 @@ export const TaskGantt: React.FC<TaskGanttProps> = ({
       className={styles.ganttVerticalContainer}
       ref={verticalGanttContainerRef}
       dir="ltr"
+      // ! 此处必须设定高度和滚动区内容高度一致，否则顶部日期 sticky 会滑出视线
+      style={{ height: svgHeight + headerHeight + "px" }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={gridProps.svgWidth}
         height={calendarProps.headerHeight}
         fontFamily={barProps.fontFamily}
+        className={styles.calendarTopContainer}
       >
         <Calendar {...calendarProps} />
       </svg>

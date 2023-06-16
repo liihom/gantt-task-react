@@ -1,5 +1,5 @@
 .ganttVerticalContainer {
-  overflow: hidden;
+  /* overflow: hidden; */
   font-size: 0;
   margin: 0;
   padding: 0;
@@ -9,6 +9,8 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+
+  background-color: #fff;
 }
 
 .wrapper {
@@ -19,27 +21,12 @@
   outline: none;
   position: relative;
   color: #20253F;
+
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* .calendar_backward,
-.calendar_forward {
-  position: absolute;
+.calendarTopContainer {
+  position: sticky;
   top: 0;
-  width: 30px;
-  height: 50px;
-  background-color: #f6f6f6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
 }
-.calendar_backward {
-  left: 0;
-}
-.calendar_forward {
-  right: 0;
-}
-.calendar_backward svg,.calendar_forward svg {
-  width: 16px;
-  height: 16px;
-} */

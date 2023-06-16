@@ -125,6 +125,8 @@ export interface StylingOption {
   listCellWidth?: string;
   rowHeight?: number;
   ganttHeight?: number;
+  containerHeight?: string;
+  containerId?: string;
   barCornerRadius?: number;
   handleWidth?: number;
   fontFamily?: string;

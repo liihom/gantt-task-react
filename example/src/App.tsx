@@ -598,11 +598,12 @@ const App = () => {
         onClick={handleClick}
         onSelect={handleSelect}
         onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
+        // listCellWidth={isChecked ? "155px" : ""}
         columnWidth={columnWidth}
         locale="zh"
         onReachedLeft={handleReachedLeft}
         onReachedRight={handleReachedRight}
+        containerHeight="200px"
       />
       {/* <h3>Gantt With Limited Height</h3>
       <Gantt

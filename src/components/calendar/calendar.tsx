@@ -20,8 +20,6 @@ export type CalendarProps = {
   columnWidth: number;
   fontFamily: string;
   fontSize: string;
-  onCalendarBackward?: () => void;
-  onCalendarForward?: () => void;
 };
 
 export const Calendar: React.FC<CalendarProps> = ({
@@ -33,8 +31,6 @@ export const Calendar: React.FC<CalendarProps> = ({
   columnWidth,
   fontFamily,
   fontSize,
-  onCalendarBackward = () => {},
-  onCalendarForward = () => {},
 }) => {
   const getCalendarValuesForYear = () => {
     const topValues: ReactChild[] = [];
@@ -435,31 +431,19 @@ export const Calendar: React.FC<CalendarProps> = ({
       [topValues, bottomValues] = getCalendarValuesForHour();
   }
   return (
-    <g className="calendar" fontSize={fontSize} fontFamily={fontFamily}>
+    <g
+      className={styles.calendarContent}
+      fontSize={fontSize}
+      fontFamily={fontFamily}
+    >
       <rect
         x={0}
         y={0}
-        width={columnWidth * dateSetup.dates.length + 16}
+        width={columnWidth * dateSetup.dates.length}
         height={headerHeight}
         className={styles.calendarHeader}
       />
       {bottomValues} {topValues}
-      <text
-        x={2}
-        y={40}
-        className={styles.calendar_backward}
-        onClick={onCalendarBackward}
-      >
-        &lt;
-      </text>
-      <text
-        x={columnWidth * dateSetup.dates.length - 10}
-        y={40}
-        className={styles.calendar_forward}
-        onClick={onCalendarForward}
-      >
-        &gt;&gt;
-      </text>
     </g>
   );
 };

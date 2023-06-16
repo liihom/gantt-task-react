@@ -1,6 +1,6 @@
 import React, {
   useState,
-  SyntheticEvent,
+  // SyntheticEvent,
   useRef,
   useEffect,
   useMemo,
@@ -13,14 +13,14 @@ import { TaskGanttContentProps } from "./task-gantt-content";
 import { TaskListHeaderDefault } from "../task-list/task-list-header";
 import { TaskListTableDefault } from "../task-list/task-list-table";
 import { StandardTooltipContent, Tooltip } from "../other/tooltip";
-import { VerticalScroll } from "../other/vertical-scroll";
+// import { VerticalScroll } from "../other/vertical-scroll";
 import { TaskListProps, TaskList } from "../task-list/task-list";
 import { TaskGantt } from "./task-gantt";
 import { BarTask, GroupProps } from "../../types/bar-task";
 import { convertToBarTasks } from "../../helpers/bar-helper";
 import { GanttEvent } from "../../types/gantt-task-actions";
 import { DateSetup } from "../../types/date-setup";
-import { HorizontalScroll } from "../other/horizontal-scroll";
+// import { HorizontalScroll } from "../other/horizontal-scroll";
 // import { removeHiddenTasks, sortTasks } from "../../helpers/other-helper";
 import { removeHiddenTasks } from "../../helpers/other-helper";
 import styles from "./gantt.module.css";
@@ -28,14 +28,13 @@ import styles from "./gantt.module.css";
 export const Gantt: React.FunctionComponent<GanttProps> = ({
   tasks,
   dates,
-  // dateRangeStart = new Date(),
-  // dateRangeEnd = new Date(new Date().setMonth(new Date().getMonth() + 1)),
   headerHeight = 50,
   columnWidth = 40,
   listCellWidth = "155px",
-  // rowHeight = 36,
   rowHeight = 46,
   ganttHeight = 0,
+  containerHeight,
+  containerId = "ganttContainerEl",
   viewMode = ViewMode.Day,
   preStepsCount = 1,
   locale = "en-GB",
@@ -117,7 +116,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 
   const [scrollY, setScrollY] = useState(0);
   const [scrollX, setScrollX] = useState(-1);
-  const [ignoreScrollEvent, setIgnoreScrollEvent] = useState(false);
+  const [, setIgnoreScrollEvent] = useState(false);
 
   // task change events
   useEffect(() => {
@@ -266,13 +265,13 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
       setTaskListWidth(0);
     }
     if (taskListRef.current) {
-      setTaskListWidth(taskListRef.current.offsetWidth);
+      setTaskListWidth(taskListRef.current.clientWidth);
     }
   }, [taskListRef, listCellWidth]);
 
   useEffect(() => {
     if (wrapperRef.current) {
-      setSvgContainerWidth(wrapperRef.current.offsetWidth - taskListWidth);
+      setSvgContainerWidth(wrapperRef.current.clientWidth - taskListWidth);
     }
   }, [wrapperRef, taskListWidth]);
 
@@ -286,83 +285,108 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 
   // scroll events
   useEffect(() => {
-    const handleWheel = (event: WheelEvent) => {
-      if (event.shiftKey || event.deltaX) {
-        const scrollMove = event.deltaX ? event.deltaX : event.deltaY;
-        let newScrollX = scrollX + scrollMove;
-        if (newScrollX < 0) {
-          newScrollX = 0;
-        } else if (newScrollX > svgWidth) {
-          newScrollX = svgWidth;
-        }
-        setScrollX(newScrollX);
-        event.preventDefault();
-      } else if (ganttHeight) {
-        let newScrollY = scrollY + event.deltaY;
-        if (newScrollY < 0) {
-          newScrollY = 0;
-        } else if (newScrollY > ganttFullHeight - ganttHeight) {
-          newScrollY = ganttFullHeight - ganttHeight;
-        }
-        if (newScrollY !== scrollY) {
-          setScrollY(newScrollY);
-          event.preventDefault();
+    let saveScrollLeft = wrapperRef.current?.scrollLeft;
+    const handleScroll = (event: any) => {
+      const scrollLeft = event.currentTarget.scrollLeft;
+      const width = event.currentTarget.clientWidth;
+      const leftCellWidth: number = taskListRef.current?.offsetWidth || 155;
+      const diff = svgWidth - (width - leftCellWidth + scrollLeft);
+      if (saveScrollLeft !== scrollLeft) {
+        saveScrollLeft = scrollLeft;
+        if (scrollLeft <= 0) {
+          onReachedLeft?.();
+        } else if (diff === 0) {
+          onReachedRight?.();
         }
       }
-
-      setIgnoreScrollEvent(true);
     };
 
-    // subscribe if scroll is necessary
-    wrapperRef.current?.addEventListener("wheel", handleWheel, {
+    wrapperRef.current?.addEventListener("scroll", handleScroll, {
       passive: false,
     });
     return () => {
-      wrapperRef.current?.removeEventListener("wheel", handleWheel);
+      wrapperRef.current?.removeEventListener("scroll", handleScroll);
     };
-  }, [
-    wrapperRef,
-    scrollY,
-    scrollX,
-    ganttHeight,
-    svgWidth,
-    rtl,
-    ganttFullHeight,
-  ]);
+  }, [wrapperRef, svgWidth, onReachedLeft, onReachedRight]);
 
-  const handleScrollY = (event: SyntheticEvent<HTMLDivElement>) => {
-    if (scrollY !== event.currentTarget.scrollTop && !ignoreScrollEvent) {
-      setScrollY(event.currentTarget.scrollTop);
-      setIgnoreScrollEvent(true);
-    } else {
-      setIgnoreScrollEvent(false);
-    }
-  };
+  // useEffect(() => {
+  //   const handleWheel = (event: WheelEvent) => {
+  //     if (event.shiftKey || event.deltaX) {
+  //       const scrollMove = event.deltaX ? event.deltaX : event.deltaY;
+  //       let newScrollX = scrollX + scrollMove;
+  //       if (newScrollX < 0) {
+  //         newScrollX = 0;
+  //       } else if (newScrollX > svgWidth) {
+  //         newScrollX = svgWidth;
+  //       }
+  //       setScrollX(newScrollX);
+  //       event.preventDefault();
+  //     } else if (ganttHeight) {
+  //       let newScrollY = scrollY + event.deltaY;
+  //       if (newScrollY < 0) {
+  //         newScrollY = 0;
+  //       } else if (newScrollY > ganttFullHeight - ganttHeight) {
+  //         newScrollY = ganttFullHeight - ganttHeight;
+  //       }
+  //       if (newScrollY !== scrollY) {
+  //         setScrollY(newScrollY);
+  //         event.preventDefault();
+  //       }
+  //     }
 
-  const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
-    // if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
-    // if (!ignoreScrollEvent) {
-    const scrollLeft = event.currentTarget.scrollLeft;
-    const offsetWidth = event.currentTarget.offsetWidth;
-    const threshold = svgWidth - offsetWidth - scrollLeft;
-    const diff = scrollLeft - scrollX;
-    let direct = "right";
-    if (diff < 0) {
-      direct = "left";
-    }
-    if (direct === "left" && scrollLeft <= 10) {
-      // console.log("触左边缘了。。。");
-      onReachedLeft?.();
-    } else if (direct === "right" && threshold <= 10) {
-      // console.log("触右边缘了。。。");
-      onReachedRight?.();
-    }
-    setScrollX(scrollLeft);
-    //   setIgnoreScrollEvent(true);
-    // } else {
-    //   setIgnoreScrollEvent(false);
-    // }
-  };
+  //     setIgnoreScrollEvent(true);
+  //   };
+
+  //   // subscribe if scroll is necessary
+  //   wrapperRef.current?.addEventListener("wheel", handleWheel, {
+  //     passive: false,
+  //   });
+  //   return () => {
+  //     wrapperRef.current?.removeEventListener("wheel", handleWheel);
+  //   };
+  // }, [
+  //   wrapperRef,
+  //   scrollY,
+  //   scrollX,
+  //   ganttHeight,
+  //   svgWidth,
+  //   rtl,
+  //   ganttFullHeight,
+  // ]);
+
+  // const handleScrollY = (event: SyntheticEvent<HTMLDivElement>) => {
+  //   if (scrollY !== event.currentTarget.scrollTop && !ignoreScrollEvent) {
+  //     setScrollY(event.currentTarget.scrollTop);
+  //     setIgnoreScrollEvent(true);
+  //   } else {
+  //     setIgnoreScrollEvent(false);
+  //   }
+  // };
+
+  // const handleScrollX = (event: SyntheticEvent<HTMLDivElement>) => {
+  //   // if (scrollX !== event.currentTarget.scrollLeft && !ignoreScrollEvent) {
+  //   // if (!ignoreScrollEvent) {
+  //   const scrollLeft = event.currentTarget.scrollLeft;
+  //   const offsetWidth = event.currentTarget.offsetWidth;
+  //   const threshold = svgWidth - offsetWidth - scrollLeft;
+  //   const diff = scrollLeft - scrollX;
+  //   let direct = "right";
+  //   if (diff < 0) {
+  //     direct = "left";
+  //   }
+  //   if (direct === "left" && scrollLeft <= 10) {
+  //     // console.log("触左边缘了。。。");
+  //     onReachedLeft?.();
+  //   } else if (direct === "right" && threshold <= 10) {
+  //     // console.log("触右边缘了。。。");
+  //     onReachedRight?.();
+  //   }
+  //   setScrollX(scrollLeft);
+  //   //   setIgnoreScrollEvent(true);
+  //   // } else {
+  //   //   setIgnoreScrollEvent(false);
+  //   // }
+  // };
 
   /**
    * Handles arrow keys events and transform it to new scroll
@@ -453,8 +477,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     fontFamily,
     fontSize,
     rtl,
-    onCalendarBackward: onReachedLeft,
-    onCalendarForward: onReachedRight,
   };
   const barProps: TaskGanttContentProps = {
     tasks: barTasks,
@@ -500,6 +522,18 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     TaskListTable,
   };
 
+  // useEffect(() => {
+  //   function touchmove() {
+  //     console.log("touchmove == ");
+  //   }
+  //   if (wrapperRef.current) {
+  //     wrapperRef.current.addEventListener("mousemove", touchmove);
+  //   }
+  //   return () => {
+  //     wrapperRef.current?.removeEventListener("mousemove", touchmove);
+  //   };
+  // }, []);
+
   return (
     <div>
       <div
@@ -507,6 +541,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         onKeyDown={handleKeyDown}
         tabIndex={0}
         ref={wrapperRef}
+        style={{ maxHeight: containerHeight ? containerHeight : "auto" }}
+        id={containerId}
       >
         {listCellWidth && <TaskList {...tableProps} />}
         <TaskGantt
@@ -514,6 +550,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
           calendarProps={calendarProps}
           barProps={barProps}
           ganttHeight={ganttHeight}
+          headerHeight={headerHeight}
           scrollY={scrollY}
           scrollX={scrollX}
         />
@@ -535,22 +572,22 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
             svgWidth={svgWidth}
           />
         )}
-        <VerticalScroll
+        {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
           rtl={rtl}
-        />
+        /> */}
       </div>
-      <HorizontalScroll
+      {/* <HorizontalScroll
         svgWidth={svgWidth}
         taskListWidth={taskListWidth}
         scroll={scrollX}
         rtl={rtl}
         onScroll={handleScrollX}
-      />
+      /> */}
     </div>
   );
 };

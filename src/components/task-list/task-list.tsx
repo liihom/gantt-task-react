@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 // import { BarTask, RowProps } from "../../types/bar-task";
 import { GroupProps } from "../../types/bar-task";
 import { ItemProps } from "../../types/public-types";
@@ -56,6 +56,14 @@ export const TaskList: React.FC<TaskListProps> = ({
   TaskListTable,
 }) => {
   const horizontalContainerRef = useRef<HTMLDivElement>(null);
+  const tableLeftHeight = useMemo(() => {
+    const lines = tasks
+      .map(item => item.tasks.length)
+      .reduce((a, b) => a + b, tasks.length);
+    const svgHeight = rowHeight * lines;
+    return svgHeight + headerHeight;
+  }, [headerHeight, rowHeight, tasks]);
+
   useEffect(() => {
     if (horizontalContainerRef.current) {
       horizontalContainerRef.current.scrollTop = scrollY;
@@ -82,7 +90,16 @@ export const TaskList: React.FC<TaskListProps> = ({
   };
 
   return (
-    <div ref={taskListRef}>
+    <div
+      ref={taskListRef}
+      style={{
+        position: "sticky",
+        left: 0,
+        zIndex: 100,
+        height: tableLeftHeight, // ! 此处必须设定高度和滚动区内容高度一致，否则顶部 header sticky 会滑出视线
+        background: "#fff",
+      }}
+    >
       <TaskListHeader {...headerProps} />
       <div
         ref={horizontalContainerRef}
