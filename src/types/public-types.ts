@@ -63,6 +63,8 @@ export interface Task {
   needName?: number;
   /** 需求所属需求 */
   parentNeedName?: number;
+  /** 任务详情链接 */
+  targetLink?: string;
 }
 
 export interface EventOption {

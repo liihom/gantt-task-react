@@ -31,3 +31,40 @@
   color: #6F778F;
   padding: 0 2px;
 }
+
+.tooltip_title {
+  padding: 10px 0;
+  font-weight: normal;
+  color: #20253F;
+}
+.tooltip_id {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #6F778F;
+}
+.tooltip_id_icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+.tooltip_name {
+  font-size: 14px;
+  line-height: 20px;
+}
+.tooltip_content {
+  color: #20253F;
+}
+.tooltip_content_item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 18px;
+}
+.tooltip_label {
+  white-space: nowrap;
+  margin-right: 10px;
+  color: #20253F;
+}

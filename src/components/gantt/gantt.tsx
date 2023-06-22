@@ -12,7 +12,7 @@ import { CalendarProps } from "../calendar/calendar";
 import { TaskGanttContentProps } from "./task-gantt-content";
 import { TaskListHeaderDefault } from "../task-list/task-list-header";
 import { TaskListTableDefault } from "../task-list/task-list-table";
-import { StandardTooltipContent, Tooltip } from "../other/tooltip";
+// import { StandardTooltipContent, Tooltip } from "../other/tooltip";
 // import { VerticalScroll } from "../other/vertical-scroll";
 import { TaskListProps, TaskList } from "../task-list/task-list";
 import { TaskGantt } from "./task-gantt";
@@ -60,7 +60,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   todayColor = "rgba(252, 248, 227, 0.8)",
   // todayColor = "#f5f9fc9e",
   viewDate,
-  TooltipContent = StandardTooltipContent,
+  // TooltipContent = StandardTooltipContent,
   TaskListHeader = TaskListHeaderDefault,
   TaskListTable = TaskListTableDefault,
   onDateChange,
@@ -84,8 +84,10 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   );
 
   const [taskListWidth, setTaskListWidth] = useState(0);
-  const [svgContainerWidth, setSvgContainerWidth] = useState(0);
-  const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight);
+  // const [svgContainerWidth, setSvgContainerWidth] = useState(0);
+  const [, setSvgContainerWidth] = useState(0);
+  // const [svgContainerHeight, setSvgContainerHeight] = useState(ganttHeight);
+  const [, setSvgContainerHeight] = useState(ganttHeight);
   const [barTasks, setBarTasks] = useState<GroupProps[]>([]);
   const [ganttEvent, setGanttEvent] = useState<GanttEvent>({
     action: "",
@@ -522,18 +524,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     TaskListTable,
   };
 
-  // useEffect(() => {
-  //   function touchmove() {
-  //     console.log("touchmove == ");
-  //   }
-  //   if (wrapperRef.current) {
-  //     wrapperRef.current.addEventListener("mousemove", touchmove);
-  //   }
-  //   return () => {
-  //     wrapperRef.current?.removeEventListener("mousemove", touchmove);
-  //   };
-  // }, []);
-
   return (
     <div>
       <div
@@ -554,7 +544,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
           scrollY={scrollY}
           scrollX={scrollX}
         />
-        {ganttEvent.changedTask && (
+        {/* {ganttEvent.changedTask && (
           <Tooltip
             arrowIndent={arrowIndent}
             rowHeight={rowHeight}
@@ -571,7 +561,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
             rtl={rtl}
             svgWidth={svgWidth}
           />
-        )}
+        )} */}
         {/* <VerticalScroll
           ganttFullHeight={ganttFullHeight}
           ganttHeight={ganttHeight}

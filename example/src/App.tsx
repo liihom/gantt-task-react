@@ -603,7 +603,7 @@ const App = () => {
         locale="zh"
         onReachedLeft={handleReachedLeft}
         onReachedRight={handleReachedRight}
-        containerHeight="200px"
+        containerHeight="500px"
       />
       {/* <h3>Gantt With Limited Height</h3>
       <Gantt
