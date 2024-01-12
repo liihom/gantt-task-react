@@ -1,6 +1,15 @@
 # gantt-task-react
 
-## 团队负载甘特图，本项目代码是对 [gantt-task-react](https://github.com/MaTeMaTuK/gantt-task-react) 源码的二次改造，定制了工时时间轴等业务功能，打包后放于主项目中。
+## 协作 - 甘特图源码，本项目代码是对 [gantt-task-react](https://github.com/MaTeMaTuK/gantt-task-react) 源码的二次改造，定制了工时时间轴等业务功能，打包后放于主项目中。
+
+## 启动 demo
+```javascript
+  // 根目录启动源码编译
+  npm start
+
+  // 同时进到 example 目录，以查看 demo
+  npm start
+```
 
 ## Interactive Gantt Chart for React with TypeScript.
 
